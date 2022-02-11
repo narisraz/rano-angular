@@ -1,9 +1,9 @@
 
 export class Consommation {
-  constructor(
-    volume: number,
-    statementDate: Date,
-    abonneeId: String
-  ) {
-  }
+  id!: String
+  abonneeId!: String
+  volume!: number
+  statementDate!: Date
+  amountPaid: number = 0
+  amountToPay!:number
 }

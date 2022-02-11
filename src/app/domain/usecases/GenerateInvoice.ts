@@ -1,0 +1,47 @@
+import {IUseCase} from "../ports/in/IUseCase";
+import {InvoiceRequest} from "../entities/requests/InvoiceRequest";
+import {InvoiceResponse} from "../entities/responses/InvoiceResponse";
+import {combineLatest, Observable, of} from "rxjs";
+import {ClientRepository} from "../ports/out/ClientRepository";
+import {Injectable} from "@angular/core";
+import {flatMap} from "rxjs/internal/operators";
+import {SiteRepository} from "../ports/out/SiteRepository";
+import {AbonneeRepository} from "../ports/out/AbonneeRepository";
+import {PricingRepository} from "../ports/out/PricingRepository";
+import {ConsommationRepository} from "../ports/out/ConsommationRepository";
+
+@Injectable({
+  providedIn: "root"
+})
+export class GenerateInvoice implements IUseCase<InvoiceRequest, Observable<InvoiceResponse>> {
+
+  constructor(
+    private clientRepository: ClientRepository,
+    private abonneeRepository: AbonneeRepository,
+    private pricingRepository: PricingRepository,
+    private consommationRepository: ConsommationRepository,
+    private siteRepository: SiteRepository
+  ) {
+  }
+
+  execute(invoiceRequest: InvoiceRequest): Observable<InvoiceResponse> {
+    return combineLatest([
+      this.clientRepository.findById(invoiceRequest.clientId),
+      this.abonneeRepository.findById(invoiceRequest.abonneeId),
+      this.pricingRepository.getAllByClientId(invoiceRequest.clientId),
+      this.consommationRepository.getLatestConsommationsByAbonneeId(invoiceRequest.abonneeId, invoiceRequest.date),
+      this.siteRepository.getByAbonneeId(invoiceRequest.abonneeId)
+    ]).pipe(
+      flatMap(([client, abonnee, pricing, consommations, site]): Observable<InvoiceResponse> => {
+        return of(new InvoiceResponse(
+          client,
+          site,
+          abonnee,
+          consommations,
+          pricing
+        ))
+      })
+    )
+  }
+
+}
