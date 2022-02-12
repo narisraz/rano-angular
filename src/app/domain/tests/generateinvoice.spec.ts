@@ -2,11 +2,7 @@ import {GenerateInvoice} from "../usecases/GenerateInvoice";
 import {client1, MockClientRepository} from "./mocks/MockClientRepository";
 import {abonnee1, MockAbonneeRepository} from "./mocks/MockAbonneeRepository";
 import {client1Pricing10To20, client2Pricing0To10, MockPricingRepository} from "./mocks/MockPricingRepository";
-import {
-  consommationAbonnee1Month1, consommationAbonnee1Month2,
-  consommationAbonnee1Month3,
-  MockConsommationRepository
-} from "./mocks/MockConsommationRepository";
+import {consommationAbonnee1Month2, MockConsommationRepository} from "./mocks/MockConsommationRepository";
 import {MockSiteRepository} from "./mocks/MockSiteRepository";
 import {InvoiceRequest} from "../entities/requests/InvoiceRequest";
 

@@ -2,8 +2,7 @@ import {ConsommationRepository} from "../../domain/ports/out/ConsommationReposit
 import {Injectable} from "@angular/core";
 import {AngularFirestore} from "@angular/fire/compat/firestore";
 import {Consommation} from "../../domain/entities/Consommation";
-import {from, identity, Observable, of} from "rxjs";
-import {Site} from "../../domain/entities/Site";
+import {from, Observable, of} from "rxjs";
 import {Builder} from "builder-pattern";
 import {flatMap} from "rxjs/internal/operators";
 

@@ -1,0 +1,39 @@
+import {IUseCase} from "../ports/in/IUseCase";
+import {GetAbonneeInfoResponse} from "../entities/responses/GetAbonneeInfoResponse";
+import {Injectable} from "@angular/core";
+import {GetAbonneeInfoRequest} from "../entities/requests/GetAbonneeInfoRequest";
+import {AbonneeRepository} from "../ports/out/AbonneeRepository";
+import {SiteRepository} from "../ports/out/SiteRepository";
+import {ConsommationRepository} from "../ports/out/ConsommationRepository";
+import {combineLatest, Observable} from "rxjs";
+import {map} from "rxjs/internal/operators";
+
+@Injectable({
+  providedIn: "root"
+})
+export class GetAbonneeInfo implements IUseCase<GetAbonneeInfoRequest, Observable<GetAbonneeInfoResponse>> {
+
+  constructor(
+    private abonneeRepository: AbonneeRepository,
+    private siteRepository: SiteRepository,
+    private consommationRepository: ConsommationRepository
+  ) {
+  }
+
+  execute(getAbonneeInfoRequest: GetAbonneeInfoRequest): Observable<GetAbonneeInfoResponse> {
+    return combineLatest([
+      this.abonneeRepository.findById(getAbonneeInfoRequest.abonneeId),
+      this.siteRepository.getByAbonneeId(getAbonneeInfoRequest.abonneeId),
+      this.consommationRepository.getLatestConsommationsByAbonneeId(getAbonneeInfoRequest.abonneeId, 6)
+    ]).pipe(
+      map(([abonnee, site, consommations]) => {
+        return new GetAbonneeInfoResponse(
+          abonnee,
+          site,
+          consommations
+        )
+      })
+    )
+  }
+
+}

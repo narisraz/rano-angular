@@ -3,8 +3,8 @@ import {EncaissementRequest} from "../entities/requests/EncaissementRequest";
 import {Injectable} from "@angular/core";
 import {AbonneeRepository} from "../ports/out/AbonneeRepository";
 import {ConsommationRepository} from "../ports/out/ConsommationRepository";
-import {combineLatest, Observable, of} from "rxjs";
-import {flatMap} from "rxjs/internal/operators";
+import {combineLatest, Observable} from "rxjs";
+import {map} from "rxjs/internal/operators";
 import {Consommation} from "../entities/Consommation";
 import {EncaissementResponse} from "../entities/responses/EncaissementResponse";
 import {tap} from "rxjs/operators";
@@ -29,7 +29,7 @@ export class DoEncaissement implements IUseCase<EncaissementRequest, Observable<
       this.consommationRepository.getNotBilledConsommations(encaissementRequest.abonneeId),
       this.updateAbonneAccount.execute(new UpdateAbonneeAccountRequest(encaissementRequest.abonneeId, encaissementRequest.amount)),
     ]).pipe(
-      flatMap(([consommations, abonneeAccount]) => this.buildEncaissementResponse(consommations, abonneeAccount))
+      map(([consommations, abonneeAccount]) => this.buildEncaissementResponse(consommations, abonneeAccount))
     ).pipe(
       tap(encaissementResponse => {
         this.updateAbonneAccount.execute(new UpdateAbonneeAccountRequest(encaissementResponse.abonneeAccount.accountId, encaissementResponse.abonneeAccount.balance))
@@ -39,7 +39,7 @@ export class DoEncaissement implements IUseCase<EncaissementRequest, Observable<
     )
   }
 
-  private buildEncaissementResponse(consommations: Consommation[], abonneeAccount: AbonneeAccount): Observable<EncaissementResponse> {
+  private buildEncaissementResponse(consommations: Consommation[], abonneeAccount: AbonneeAccount): EncaissementResponse {
     const newAbonneeAccount: AbonneeAccount = {...abonneeAccount}
     const billedConsommations: Consommation[] = []
     consommations
@@ -52,10 +52,10 @@ export class DoEncaissement implements IUseCase<EncaissementRequest, Observable<
           billedConsommations.push(newConsommation)
         }
       })
-    return of(new EncaissementResponse(
+    return new EncaissementResponse(
       billedConsommations,
       newAbonneeAccount
-    ))
+    )
   };
 
   private filterPayableConsommation(consommation: Consommation, balance: number) {

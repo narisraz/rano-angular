@@ -3,7 +3,6 @@ import {Injectable} from "@angular/core";
 import {AngularFirestore} from "@angular/fire/compat/firestore";
 import {Pricing} from "../../domain/entities/Pricing";
 import {from, identity, Observable, of} from "rxjs";
-import {Site} from "../../domain/entities/Site";
 import {Builder} from "builder-pattern";
 import {flatMap} from "rxjs/internal/operators";
 
