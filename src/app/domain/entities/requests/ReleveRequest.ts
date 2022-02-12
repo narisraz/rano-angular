@@ -1,7 +1,7 @@
 export class ReleveRequest {
   constructor(
-    public clientId: String,
-    public abonneeId: String,
+    public clientId: string,
+    public abonneeId: string,
     public volume: number,
     public date: Date
   ) {

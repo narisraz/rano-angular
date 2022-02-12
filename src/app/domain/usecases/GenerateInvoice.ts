@@ -29,12 +29,12 @@ export class GenerateInvoice implements IUseCase<InvoiceRequest, Observable<Invo
       this.clientRepository.findById(invoiceRequest.clientId),
       this.abonneeRepository.findById(invoiceRequest.abonneeId),
       this.pricingRepository.getAllByClientId(invoiceRequest.clientId),
-      this.consommationRepository.getLatestConsommationsByAbonneeId(invoiceRequest.abonneeId, invoiceRequest.date),
+      this.consommationRepository.getLatestConsommationsByAbonneeId(invoiceRequest.abonneeId, invoiceRequest.numberOfConsommationBefore),
       this.siteRepository.getByAbonneeId(invoiceRequest.abonneeId)
     ]).pipe(
       flatMap(([client, abonnee, pricing, consommations, site]): Observable<InvoiceResponse> => {
         return of(new InvoiceResponse(
-          client,
+          client!,
           site,
           abonnee,
           consommations,

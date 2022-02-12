@@ -1,7 +1,7 @@
 export interface Address {
-  region?: String,
-  commune?: String,
-  fokontany?: String,
-  lot?: String,
-  gps?: String
+  region?: string,
+  commune?: string,
+  fokontany?: string,
+  lot?: string,
+  gps?: string
 }

@@ -1,8 +1,8 @@
 export class InvoiceRequest {
   constructor(
-    public abonneeId: String,
-    public clientId: String,
-    public date: Date
+    public abonneeId: string,
+    public clientId: string,
+    public numberOfConsommationBefore: number
   ) {
   }
 }

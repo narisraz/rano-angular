@@ -40,11 +40,11 @@ export function MockPricingRepository(): PricingRepository {
       }
     }
 
-    getAllByClientId(clientId: String): Observable<Array<Pricing>> {
+    getAllByClientId(clientId: string): Observable<Array<Pricing>> {
       return of(pricings.filter(pricing => pricing.clientId == clientId))
     }
 
-    getPrice(clientId: String, volume: number): Observable<Pricing | undefined> {
+    getPrice(clientId: string, volume: number): Observable<Pricing | undefined> {
       return of(pricings
         .filter(pricing => pricing.clientId == clientId)
         .find(pricing => {

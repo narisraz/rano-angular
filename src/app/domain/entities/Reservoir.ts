@@ -1,5 +1,5 @@
 export class Reservoir {
-  id!: String
-  siteId!: String
-  volume!: String
+  id!: string
+  siteId!: string
+  volume!: string
 }

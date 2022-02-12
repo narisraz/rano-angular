@@ -15,7 +15,7 @@ export function MockSiteRepository(): SiteRepository {
       return of(site);
     }
 
-    getByAbonneeId(abonneeId: String): Observable<Site> {
+    getByAbonneeId(abonneeId: string): Observable<Site> {
       return abonnees
         .filter(value => value.id == abonneeId)
         .map(value => {

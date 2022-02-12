@@ -3,7 +3,7 @@ import {Observable} from "rxjs";
 
 export abstract class ConsommationRepository {
   abstract add(consommation: Consommation): Observable<Consommation>
-  abstract updateAmountPaidById(id: String, amountPaid: number): Observable<Consommation>
-  abstract getLatestConsommationsByAbonneeId(abonneeId: String, date: Date): Observable<Array<Consommation>>
-  abstract getNotBilledConsommations(abonneeId: String): Observable<Array<Consommation>>
+  abstract updateAmountPaidById(id: string, amountPaid: number): Observable<void>
+  abstract getLatestConsommationsByAbonneeId(abonneeId: string, count: number): Observable<Array<Consommation>>
+  abstract getNotBilledConsommations(abonneeId: string): Observable<Array<Consommation>>
 }

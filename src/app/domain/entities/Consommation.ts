@@ -1,7 +1,7 @@
 
 export class Consommation {
-  id!: String
-  abonneeId!: String
+  id!: string
+  abonneeId!: string
   volume!: number
   statementDate!: Date
   amountPaid: number = 0

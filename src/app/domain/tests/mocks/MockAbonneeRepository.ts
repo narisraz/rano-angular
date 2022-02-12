@@ -35,7 +35,7 @@ export function MockAbonneeRepository(): AbonneeRepository {
       }
     }
 
-    findById(id: String): Observable<Abonnee> {
+    findById(id: string): Observable<Abonnee> {
       switch (id) {
         case "1": return of(abonnee1)
         case "2": return of(abonnee2)

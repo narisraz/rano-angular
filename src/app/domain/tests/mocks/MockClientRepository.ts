@@ -16,14 +16,14 @@ export function MockClientRepository(): ClientRepository {
       return of(client);
     }
 
-    findById(id: String): Observable<Client> {
+    findById(id: string): Observable<Client> {
       switch (id) {
         case client1.id: return of(client1)
         default: throw new Error(`Cient not found with id ${id}`)
       }
     }
 
-    findByName(name: String): Observable<Client> {
+    findByName(name: string): Observable<Client> {
       switch (name) {
         case client1.name: return of(client1)
         default: throw new Error(`Cient not found with name ${name}`)

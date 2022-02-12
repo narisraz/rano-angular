@@ -19,7 +19,7 @@ export const
 
 export function MockAbonneeAccountRepository(): AbonneeAccountRepository {
   return new class extends AbonneeAccountRepository {
-    getByAbonneeId(abonneeId: String): Observable<AbonneeAccount> {
+    getByAbonneeId(abonneeId: string): Observable<AbonneeAccount> {
       switch (abonneeId) {
         case "1": return of(abonneeAccount1Minus100)
         case "2": return of(abonneeAccount2Plus100)
@@ -28,7 +28,7 @@ export function MockAbonneeAccountRepository(): AbonneeAccountRepository {
       }
     }
 
-    updateBalance(abonneeId: String, value: number): Observable<AbonneeAccount> {
+    updateBalance(abonneeId: string, value: number): Observable<AbonneeAccount> {
       switch (abonneeId) {
         case "1": return of(Builder(abonneeAccount1Minus100).balance(value).build())
         case "2": return of(Builder(abonneeAccount2Plus100).balance(value).build())

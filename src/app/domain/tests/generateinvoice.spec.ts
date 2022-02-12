@@ -3,7 +3,7 @@ import {client1, MockClientRepository} from "./mocks/MockClientRepository";
 import {abonnee1, MockAbonneeRepository} from "./mocks/MockAbonneeRepository";
 import {client1Pricing10To20, client2Pricing0To10, MockPricingRepository} from "./mocks/MockPricingRepository";
 import {
-  consommationAbonnee1Month1,
+  consommationAbonnee1Month1, consommationAbonnee1Month2,
   consommationAbonnee1Month3,
   MockConsommationRepository
 } from "./mocks/MockConsommationRepository";
@@ -25,11 +25,11 @@ describe('Generate invoice', function () {
   })
 
   it('should generate invoice data given abonneeId and date', done => {
-    generateInvoice.execute(new InvoiceRequest(abonnee1.id, "1", consommationAbonnee1Month3.statementDate))
+    generateInvoice.execute(new InvoiceRequest(abonnee1.id, "1", 2))
       .subscribe(invoiceResponse => {
         expect(invoiceResponse.client.name).toEqual(client1.name)
         expect(invoiceResponse.abonnee.name).toEqual(abonnee1.name)
-        expect(invoiceResponse.lastConsommations).toContain(consommationAbonnee1Month1)
+        expect(invoiceResponse.lastConsommations).toContain(consommationAbonnee1Month2)
         expect(invoiceResponse.pricing).toContain(client1Pricing10To20)
         expect(invoiceResponse.pricing).not.toContain(client2Pricing0To10)
         done()

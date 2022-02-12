@@ -1,12 +1,12 @@
 import {Address} from "./Address";
 
 export class Abonnee {
-  id!: String
-  siteId!: String
-  reservoirId!: String
+  id!: string
+  siteId!: string
+  reservoirId!: string
   address!: Address
-  name!: String
-  contractDate!: String
-  firstName?: String
+  name!: string
+  contractDate!: string
+  firstName?: string
   telephones?: Array<number>
 }

@@ -1,12 +1,12 @@
 import {Address} from "./Address";
 
 export class Client {
-  id!: String
-  name!: String
-  stat!: String
-  nif!: String
+  id!: string
+  name!: string
+  stat!: string
+  nif!: string
   address!: Address
-  email?: String
+  email?: string
   telephones?: Array<number>
   communalTax?: number
   renewalAndExtensionFund?: number

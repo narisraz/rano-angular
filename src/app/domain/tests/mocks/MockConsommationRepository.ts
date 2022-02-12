@@ -4,7 +4,7 @@ import {Observable, of} from "rxjs";
 import {Builder} from "builder-pattern";
 import {client1Pricing0To10, client1Pricing10To20} from "./MockPricingRepository";
 
-export const
+export let
   consommationAbonnee1Month1: Consommation = Builder(Consommation)
     .id("1")
     .abonneeId("1")
@@ -34,21 +34,26 @@ export function MockConsommationRepository(): ConsommationRepository {
       return of(consommation)
     }
 
-    getLatestConsommationsByAbonneeId(abonneeId: String, date: Date): Observable<Array<Consommation>> {
-      return of([consommationAbonnee1Month1, consommationAbonnee1Month2]);
+    getLatestConsommationsByAbonneeId(abonneeId: string, count: number): Observable<Array<Consommation>> {
+      return of([consommationAbonnee1Month1, consommationAbonnee1Month2, consommationAbonnee1Month3].slice(-count));
     }
 
-    getNotBilledConsommations(abonneeId: String): Observable<Array<Consommation>> {
+    getNotBilledConsommations(abonneeId: string): Observable<Array<Consommation>> {
       return of([consommationAbonnee1Month2, consommationAbonnee1Month3]);
     }
 
-    updateAmountPaidById(id: String, amountPaid: number): Observable<Consommation> {
+    updateAmountPaidById(id: string, amountPaid: number): Observable<void> {
       switch (id) {
-        case "1": return of(Builder(consommationAbonnee1Month1).amountPaid(amountPaid).build())
-        case "2": return of(Builder(consommationAbonnee1Month2).amountPaid(amountPaid).build())
-        case "3": return of(Builder(consommationAbonnee1Month3).amountPaid(amountPaid).build())
+        case "1":
+          consommationAbonnee1Month1 = Builder(consommationAbonnee1Month1).amountPaid(amountPaid).build()
+          break
+        case "2": consommationAbonnee1Month2 = Builder(consommationAbonnee1Month2).amountPaid(amountPaid).build()
+          break
+        case "3": consommationAbonnee1Month3 = Builder(consommationAbonnee1Month3).amountPaid(amountPaid).build()
+          break
         default: throw new Error(`Unable to update consommation with id ${id}`)
       }
+      return of()
     }
   };
 }

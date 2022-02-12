@@ -1,4 +1,5 @@
 export class AbonneeAccount {
-  accountId!: String
+  id!: string
+  accountId!: string
   balance!: number
 }

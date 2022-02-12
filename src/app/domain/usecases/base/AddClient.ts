@@ -9,7 +9,7 @@ import {flatMap} from "rxjs/internal/operators";
 @Injectable({
   providedIn: "root"
 })
-export class AddClient implements IUseCase<Client, Observable<Client>>{
+export class AddClient implements IUseCase<Client, Observable<Client | undefined>>{
 
   constructor(
     private clientRepository: ClientRepository

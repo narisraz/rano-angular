@@ -1,6 +1,6 @@
 export class EncaissementRequest {
   constructor(
-    public abonneeId: String,
+    public abonneeId: string,
     public amount: number
   ) {
   }
