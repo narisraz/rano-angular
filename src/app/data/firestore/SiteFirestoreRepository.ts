@@ -40,4 +40,9 @@ export class SiteFirestoreRepository extends SiteRepository {
       )
   }
 
+  getAllSitesByClientId(clientId: String): Observable<Site[]> {
+    return this.afs.collection<Site>(this.SITE_COLLECTION, ref => ref.where("siteId", "==", clientId))
+      .valueChanges()
+  }
+
 }

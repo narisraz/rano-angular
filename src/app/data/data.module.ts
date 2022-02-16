@@ -17,7 +17,7 @@ import {environment} from "../../environments/environment";
   providers: [
     {
       provide: AUTH_EMULATOR,
-      useValue: environment.production ? undefined : ['localhost', 9099],
+      useValue: environment.production ? undefined : ['http://localhost:9099'],
     },
     {
       provide: FIRESTORE_EMULATOR,
@@ -25,7 +25,7 @@ import {environment} from "../../environments/environment";
     },
     {
       provide: FUNCTIONS_EMULATOR,
-      useValue: environment.production ? undefined : ['localhost', 5001],
+      useValue: environment.production ? undefined : ['http://localhost:5001'],
     },
   ],
 })
