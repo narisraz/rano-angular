@@ -3,6 +3,7 @@ import {FormBuilder, Validators} from "@angular/forms";
 import {AddClient} from "../../../../../domain/usecases/base/AddClient";
 import {Builder} from "builder-pattern";
 import {Client} from "../../../../../domain/entities/Client";
+import {PrimeNGConfig} from "primeng/api";
 
 @Component({
   selector: 'app-client-new',
@@ -26,10 +27,12 @@ export class ClientNewComponent implements OnInit {
 
   constructor(
     private fb: FormBuilder,
-    private addClient: AddClient
+    private addClient: AddClient,
+    private primeConfig: PrimeNGConfig
   ) { }
 
   ngOnInit(): void {
+    this.primeConfig.ripple = true
   }
 
   save() {
