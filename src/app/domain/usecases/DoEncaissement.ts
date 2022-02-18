@@ -10,7 +10,6 @@ import {UpdateAbonneeAccountRequest} from "../entities/requests/UpdateAbonneeAcc
 import {PricingRepository} from "../ports/out/PricingRepository";
 import {Pricing} from "../entities/Pricing";
 import {EncaissementResponse} from "../entities/responses/EncaissementResponse";
-import {Consommation} from "../entities/Consommation";
 
 @Injectable({
   providedIn: "root"
@@ -35,7 +34,7 @@ export class DoEncaissement implements IUseCase<EncaissementRequest, Observable<
         const billedConsommations = consommations
           .map(consommation => {
             const consommationToPay = consommation.volume - consommation.lastConsommation
-            const priceToPay = this.calulatePriceToPay(consommationToPay, pricings)
+            const priceToPay = this.calculatePriceToPay(consommationToPay, pricings)
             if (consommationToPay <= abonneeAccount.balance) {
               consommation.isBilled = true
               abonneeAccount.balance -= priceToPay
@@ -54,11 +53,7 @@ export class DoEncaissement implements IUseCase<EncaissementRequest, Observable<
     )
   }
 
-  private calculateConsommationToPay(consommation: Consommation) {
-    return consommation.volume - consommation.lastConsommation
-  }
-
-  private calulatePriceToPay(consommationToPay: number, pricings: Pricing[]): number {
+  private calculatePriceToPay(consommationToPay: number, pricings: Pricing[]): number {
     return pricings
       .filter(pricing => consommationToPay >= pricing.minVolume && consommationToPay < pricing.maxVolume)
       .map(pricing => consommationToPay * pricing.price)[0]
