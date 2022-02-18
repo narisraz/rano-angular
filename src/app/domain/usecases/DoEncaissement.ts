@@ -10,6 +10,7 @@ import {UpdateAbonneeAccountRequest} from "../entities/requests/UpdateAbonneeAcc
 import {PricingRepository} from "../ports/out/PricingRepository";
 import {Pricing} from "../entities/Pricing";
 import {EncaissementResponse} from "../entities/responses/EncaissementResponse";
+import {Consommation} from "../entities/Consommation";
 
 @Injectable({
   providedIn: "root"
@@ -31,16 +32,19 @@ export class DoEncaissement implements IUseCase<EncaissementRequest, Observable<
       this.pricingRepository.getPriceByClientIdAndTypeAndSiteId(encaissementRequest.clientId, encaissementRequest.abonneeType, encaissementRequest.siteId)
     ]).pipe(
       map(([consommations, abonneeAccount, pricings]) => {
-        const billedConsommations = consommations.map(consommation => {
-          const consommationToPay = consommation.volume - consommation.lastConsommation
-          const priceToPay = this.calulatePriceToPay(consommationToPay, pricings)
-          if (consommationToPay <= abonneeAccount.balance) {
-            consommation.isBilled = true
-            abonneeAccount.balance -= priceToPay
-            this.consommationRepository.updateIsBilled(consommation.id, true)
-          }
-          return consommation
-        }).filter(consommation => consommation.isBilled)
+        const billedConsommations = consommations
+          .map(consommation => {
+            const consommationToPay = consommation.volume - consommation.lastConsommation
+            const priceToPay = this.calulatePriceToPay(consommationToPay, pricings)
+            if (consommationToPay <= abonneeAccount.balance) {
+              consommation.isBilled = true
+              abonneeAccount.balance -= priceToPay
+            }
+            return consommation
+          })
+          .filter(consommation => consommation.isBilled)
+        billedConsommations
+          .forEach(consommation => this.consommationRepository.updateIsBilled(consommation.id, true))
         this.updateAbonneAccount.execute(new UpdateAbonneeAccountRequest(encaissementRequest.abonneeId, abonneeAccount.balance))
         return new EncaissementResponse(
           billedConsommations,
@@ -48,6 +52,10 @@ export class DoEncaissement implements IUseCase<EncaissementRequest, Observable<
         )
       })
     )
+  }
+
+  private calculateConsommationToPay(consommation: Consommation) {
+    return consommation.volume - consommation.lastConsommation
   }
 
   private calulatePriceToPay(consommationToPay: number, pricings: Pricing[]): number {
