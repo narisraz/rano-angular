@@ -2,8 +2,8 @@
 export class Consommation {
   id!: string
   abonneeId!: string
-  volume!: number
+  volume = 0
+  lastConsommation = 0
   statementDate!: Date
-  amountPaid: number = 0
-  amountToPay!:number
+  isBilled = false
 }

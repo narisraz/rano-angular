@@ -6,27 +6,35 @@ import {Builder} from "builder-pattern";
 export const
   client1Pricing0To10: Pricing = Builder(Pricing)
     .clientId("1")
+    .siteId("1")
     .price(50)
     .minVolume(0)
     .maxVolume(10)
+    .abonneeTypeId("1")
     .build(),
   client1Pricing10To20: Pricing = Builder(Pricing)
     .clientId("1")
+    .siteId("1")
     .price(110)
     .minVolume(10)
     .maxVolume(20)
+    .abonneeTypeId("1")
     .build(),
   client2Pricing0To10: Pricing = Builder(Pricing)
     .clientId("2")
+    .siteId("1")
     .price(50)
     .minVolume(0)
     .maxVolume(10)
+    .abonneeTypeId("1")
     .build(),
   client2Pricing10To20: Pricing = Builder(Pricing)
     .clientId("2")
+    .siteId("1")
     .price(110)
     .minVolume(10)
     .maxVolume(20)
+    .abonneeTypeId("1")
     .build(),
   pricings: Pricing[] = [client1Pricing0To10, client1Pricing10To20, client2Pricing0To10, client2Pricing10To20]
 
@@ -44,14 +52,11 @@ export function MockPricingRepository(): PricingRepository {
       return of(pricings.filter(pricing => pricing.clientId == clientId))
     }
 
-    getPrice(clientId: string, volume: number): Observable<Pricing | undefined> {
+    getPriceByClientIdAndTypeAndSiteId(clientId: string, typeId: string, siteId: string): Observable<Pricing[]> {
       return of(pricings
         .filter(pricing => pricing.clientId == clientId)
-        .find(pricing => {
-          const isSupMinValue = volume >= (pricing.minVolume ?? 0)
-          const isAboveMaxValue = volume < (pricing.maxVolume ?? Number.MAX_SAFE_INTEGER )
-          return isAboveMaxValue && isSupMinValue
-        })
+        .filter(pricing => pricing.abonneeTypeId = typeId)
+        .filter(pricing => pricing.siteId == siteId)
       )
     }
   }

@@ -6,14 +6,12 @@ import {AppComponent} from './app.component';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {DomainModule} from "./domain/domain.module";
 import {DataModule} from "./data/data.module";
-import { PresentationModule } from './presentation/presentation.module';
 import {SiteRepository} from "./domain/ports/out/SiteRepository";
 import {SiteFirestoreRepository} from "./data/firestore/SiteFirestoreRepository";
 import {ClientRepository} from "./domain/ports/out/ClientRepository";
 import {ClientFirestoreRepository} from "./data/firestore/ClientFirestoreRepository";
 import {PricingRepository} from "./domain/ports/out/PricingRepository";
 import {PricingFirestoreRepository} from "./data/firestore/PricingFirestoreRepository";
-import {AbonneeRepository} from "./domain/ports/out/AbonneeRepository";
 import {AbonneeAccountFirestoreRepository} from "./data/firestore/AbonneeAccountFirestoreRepository";
 import {AbonneeAccountRepository} from "./domain/ports/out/AbonneeAccountRepository";
 import {ConsommationRepository} from "./domain/ports/out/ConsommationRepository";
@@ -31,7 +29,6 @@ import {MatIconModule} from "@angular/material/icon";
     BrowserAnimationsModule,
     DomainModule,
     DataModule,
-    PresentationModule,
     MatToolbarModule,
     MatIconModule,
   ],

@@ -11,6 +11,9 @@ export const
 
 export function MockSiteRepository(): SiteRepository {
   return new class extends SiteRepository {
+    getAllSitesByClientId(clientId: String): Observable<Site[]> {
+        throw new Error("Method not implemented.");
+    }
     add(site: Site): Observable<Site> {
       return of(site);
     }

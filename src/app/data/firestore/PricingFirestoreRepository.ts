@@ -37,7 +37,7 @@ export class PricingFirestoreRepository extends PricingRepository {
       .valueChanges()
   }
 
-  getPrice(clientId: string, volume: number): Observable<Pricing | undefined> {
+  getPriceByClientIdAndTypeAndSiteId(clientId: string, volume: number): Observable<Pricing | undefined> {
     return this.afs.collection<Pricing>(this.PRICING_COLLECTION, ref => ref
       .where("clientId", "==", clientId)
       .where("minValue", ">=", volume)

@@ -46,7 +46,7 @@ export class ConsommationFirestoreRepository extends ConsommationRepository {
     ).valueChanges()
   }
 
-  updateAmountPaidById(id: string, amountPaid: number): Observable<void> {
+  updateIsBilled(id: string, amountPaid: number): Observable<void> {
     return from(
       this.afs.collection<Consommation>(this.CONSOMMATION_COLLECTION).doc(id)
       .update({

@@ -9,4 +9,5 @@ export class Abonnee {
   contractDate!: string
   firstName?: string
   telephones?: Array<number>
+  typeId!: string
 }

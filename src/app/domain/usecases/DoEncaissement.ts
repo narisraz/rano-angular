@@ -5,12 +5,11 @@ import {AbonneeRepository} from "../ports/out/AbonneeRepository";
 import {ConsommationRepository} from "../ports/out/ConsommationRepository";
 import {combineLatest, Observable} from "rxjs";
 import {map} from "rxjs/internal/operators";
-import {Consommation} from "../entities/Consommation";
-import {EncaissementResponse} from "../entities/responses/EncaissementResponse";
-import {tap} from "rxjs/operators";
-import {AbonneeAccount} from "../entities/AbonneeAccount";
 import {UpdateAbonneeAccount} from "./UpdateAbonneeAccount";
 import {UpdateAbonneeAccountRequest} from "../entities/requests/UpdateAbonneeAccountRequest";
+import {PricingRepository} from "../ports/out/PricingRepository";
+import {Pricing} from "../entities/Pricing";
+import {EncaissementResponse} from "../entities/responses/EncaissementResponse";
 
 @Injectable({
   providedIn: "root"
@@ -20,7 +19,8 @@ export class DoEncaissement implements IUseCase<EncaissementRequest, Observable<
   constructor(
     private abonneeRepository: AbonneeRepository,
     private consommationRepository: ConsommationRepository,
-    private updateAbonneAccount: UpdateAbonneeAccount
+    private updateAbonneAccount: UpdateAbonneeAccount,
+    private pricingRepository: PricingRepository
   ) {
   }
 
@@ -28,37 +28,31 @@ export class DoEncaissement implements IUseCase<EncaissementRequest, Observable<
     return combineLatest([
       this.consommationRepository.getNotBilledConsommations(encaissementRequest.abonneeId),
       this.updateAbonneAccount.execute(new UpdateAbonneeAccountRequest(encaissementRequest.abonneeId, encaissementRequest.amount)),
+      this.pricingRepository.getPriceByClientIdAndTypeAndSiteId(encaissementRequest.clientId, encaissementRequest.abonneeType, encaissementRequest.siteId)
     ]).pipe(
-      map(([consommations, abonneeAccount]) => this.buildEncaissementResponse(consommations, abonneeAccount))
-    ).pipe(
-      tap(encaissementResponse => {
-        this.updateAbonneAccount.execute(new UpdateAbonneeAccountRequest(encaissementResponse.abonneeAccount.accountId, encaissementResponse.abonneeAccount.balance))
-        encaissementResponse.consommations
-          .map(consommation => this.consommationRepository.updateAmountPaidById(consommation.abonneeId, consommation.amountPaid ?? 0))
+      map(([consommations, abonneeAccount, pricings]) => {
+        const billedConsommations = consommations.map(consommation => {
+          const consommationToPay = consommation.volume - consommation.lastConsommation
+          const priceToPay = this.calulatePriceToPay(consommationToPay, pricings)
+          if (consommationToPay <= abonneeAccount.balance) {
+            consommation.isBilled = true
+            abonneeAccount.balance -= priceToPay
+            this.consommationRepository.updateIsBilled(consommation.id, true)
+          }
+          return consommation
+        }).filter(consommation => consommation.isBilled)
+        this.updateAbonneAccount.execute(new UpdateAbonneeAccountRequest(encaissementRequest.abonneeId, abonneeAccount.balance))
+        return new EncaissementResponse(
+          billedConsommations,
+          abonneeAccount
+        )
       })
     )
   }
 
-  private buildEncaissementResponse(consommations: Consommation[], abonneeAccount: AbonneeAccount): EncaissementResponse {
-    const newAbonneeAccount: AbonneeAccount = {...abonneeAccount}
-    const billedConsommations: Consommation[] = []
-    consommations
-      .filter(consommation => this.filterPayableConsommation(consommation, newAbonneeAccount.balance))
-      .forEach(consommation => {
-        const newConsommation = {...consommation}
-        if (consommation.amountToPay <= newAbonneeAccount.balance) {
-          newConsommation.amountPaid = consommation.amountToPay
-          newAbonneeAccount.balance -= newConsommation.amountPaid
-          billedConsommations.push(newConsommation)
-        }
-      })
-    return new EncaissementResponse(
-      billedConsommations,
-      newAbonneeAccount
-    )
-  };
-
-  private filterPayableConsommation(consommation: Consommation, balance: number) {
-    return consommation.amountToPay <= balance;
+  private calulatePriceToPay(consommationToPay: number, pricings: Pricing[]): number {
+    return pricings
+      .filter(pricing => consommationToPay >= pricing.minVolume && consommationToPay < pricing.maxVolume)
+      .map(pricing => consommationToPay * pricing.price)[0]
   }
 }
