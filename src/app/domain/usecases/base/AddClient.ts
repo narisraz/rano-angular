@@ -1,4 +1,4 @@
-import {IUseCase} from "../../ports/in/IUseCase";
+import {UseCaseFunction} from "../../ports/in/UseCaseFunction";
 import {Client} from "../../entities/Client";
 import {Observable, throwError} from "rxjs";
 import {Injectable} from "@angular/core";
@@ -9,7 +9,7 @@ import {flatMap} from "rxjs/internal/operators";
 @Injectable({
   providedIn: "root"
 })
-export class AddClient implements IUseCase<Client, Observable<Client | undefined>>{
+export class AddClient implements UseCaseFunction<Client, Observable<Client | undefined>>{
 
   constructor(
     private clientRepository: ClientRepository

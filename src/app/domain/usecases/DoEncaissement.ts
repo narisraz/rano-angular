@@ -1,4 +1,4 @@
-import {IUseCase} from "../ports/in/IUseCase";
+import {UseCaseFunction} from "../ports/in/UseCaseFunction";
 import {EncaissementRequest} from "../entities/requests/EncaissementRequest";
 import {Injectable} from "@angular/core";
 import {AbonneeRepository} from "../ports/out/AbonneeRepository";
@@ -14,7 +14,7 @@ import {EncaissementResponse} from "../entities/responses/EncaissementResponse";
 @Injectable({
   providedIn: "root"
 })
-export class DoEncaissement implements IUseCase<EncaissementRequest, Observable<EncaissementResponse>>{
+export class DoEncaissement implements UseCaseFunction<EncaissementRequest, Observable<EncaissementResponse>>{
 
   constructor(
     private abonneeRepository: AbonneeRepository,

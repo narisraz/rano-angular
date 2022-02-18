@@ -2,7 +2,7 @@ import {PricingRepository} from "../../domain/ports/out/PricingRepository";
 import {Injectable} from "@angular/core";
 import {AngularFirestore} from "@angular/fire/compat/firestore";
 import {Pricing} from "../../domain/entities/Pricing";
-import {from, identity, Observable, of} from "rxjs";
+import {from, Observable, of} from "rxjs";
 import {Builder} from "builder-pattern";
 import {flatMap} from "rxjs/internal/operators";
 
@@ -37,14 +37,12 @@ export class PricingFirestoreRepository extends PricingRepository {
       .valueChanges()
   }
 
-  getPriceByClientIdAndTypeAndSiteId(clientId: string, volume: number): Observable<Pricing | undefined> {
+  getPriceByClientIdAndTypeAndSiteId(clientId: string, abonneeTypeId: string, siteId: string): Observable<Pricing[]> {
     return this.afs.collection<Pricing>(this.PRICING_COLLECTION, ref => ref
       .where("clientId", "==", clientId)
-      .where("minValue", ">=", volume)
-      .where("maxValue", "<", volume)
-    ).valueChanges().pipe(
-      flatMap(identity)
-    )
+      .where("abonneeTypeId", "==", abonneeTypeId)
+      .where("siteId", "==", siteId)
+    ).valueChanges()
   }
 
 }

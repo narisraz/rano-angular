@@ -1,0 +1,15 @@
+<form [formGroup]="clientForm" (ngSubmit)="save()">
+  <span class="p-float-label mb-4">
+    <input type="text" pInputText formControlName="name">
+    <label>Nom</label>
+  </span>
+  <span class="p-float-label mb-4">
+    <input type="text" pInputText formControlName="nif">
+    <label>NIF</label>
+  </span>
+  <span class="p-float-label">
+    <input type="text" pInputText formControlName="stat">
+    <label>Stat</label>
+  </span>
+  <button pButton pRipple label="Sauvegarder" icon="pi pi-check" [disabled]="!clientForm.valid" (click)="save()"></button>
+</form>

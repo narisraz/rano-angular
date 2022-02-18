@@ -44,4 +44,8 @@ export class ClientFirestoreRepository extends ClientRepository {
       )
   }
 
+  getAll(): Observable<Client[]> {
+    return this.afs.collection<Client>(this.CLIENT_COLLECTION).valueChanges()
+  }
+
 }

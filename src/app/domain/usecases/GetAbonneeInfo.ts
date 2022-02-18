@@ -1,4 +1,4 @@
-import {IUseCase} from "../ports/in/IUseCase";
+import {UseCaseFunction} from "../ports/in/UseCaseFunction";
 import {GetAbonneeInfoResponse} from "../entities/responses/GetAbonneeInfoResponse";
 import {Injectable} from "@angular/core";
 import {GetAbonneeInfoRequest} from "../entities/requests/GetAbonneeInfoRequest";
@@ -11,7 +11,7 @@ import {map} from "rxjs/internal/operators";
 @Injectable({
   providedIn: "root"
 })
-export class GetAbonneeInfo implements IUseCase<GetAbonneeInfoRequest, Observable<GetAbonneeInfoResponse>> {
+export class GetAbonneeInfo implements UseCaseFunction<GetAbonneeInfoRequest, Observable<GetAbonneeInfoResponse>> {
 
   constructor(
     private abonneeRepository: AbonneeRepository,

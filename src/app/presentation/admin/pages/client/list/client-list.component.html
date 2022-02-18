@@ -1,0 +1,22 @@
+<p-table [columns]="selectedColumns" [value]="clientListViewModel" responsiveLayout="scroll" (onLazyLoad)="loadClients()">
+  <ng-template pTemplate="caption">
+    <p-multiSelect [options]="columns" [(ngModel)]="selectedColumns" optionLabel="header"
+                   [style]="{minWidth: '200px'}" placeholder="Choisissez les collonnes à afficher"></p-multiSelect>
+  </ng-template>
+  <ng-template pTemplate="header" let-columns>
+    <tr>
+      <th *ngFor="let col of columns" rowspan="2" >{{ col.header }}</th>
+    </tr>
+  </ng-template>
+  <ng-template pTemplate="body" let-client let-columns="columns">
+    <tr>
+      <td *ngFor="let column of columns">{{client[column.field]}}</td>
+    </tr>
+  </ng-template>
+  <ng-template pTemplate="paginatorleft">
+    <p-button type="button" icon="pi pi-plus" styleClass="p-button-text"></p-button>
+  </ng-template>
+  <ng-template pTemplate="paginatorright">
+    <p-button type="button" icon="pi pi-cloud" styleClass="p-button-text"></p-button>
+  </ng-template>
+</p-table>

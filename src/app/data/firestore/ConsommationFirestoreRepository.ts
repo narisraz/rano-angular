@@ -46,11 +46,11 @@ export class ConsommationFirestoreRepository extends ConsommationRepository {
     ).valueChanges()
   }
 
-  updateIsBilled(id: string, amountPaid: number): Observable<void> {
+  updateIsBilled(id: string, isBilled: boolean): Observable<void> {
     return from(
       this.afs.collection<Consommation>(this.CONSOMMATION_COLLECTION).doc(id)
       .update({
-        amountPaid: amountPaid
+        isBilled
       }))
   }
 

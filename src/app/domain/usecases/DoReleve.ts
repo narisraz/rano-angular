@@ -1,4 +1,4 @@
-import {IUseCase} from "../ports/in/IUseCase";
+import {UseCaseFunction} from "../ports/in/UseCaseFunction";
 import {Consommation} from "../entities/Consommation";
 import {Builder} from "builder-pattern";
 import {ReleveRequest} from "../entities/requests/ReleveRequest";
@@ -10,7 +10,7 @@ import {mergeMap} from "rxjs/operators";
 @Injectable({
   providedIn: "root"
 })
-export class DoReleve implements IUseCase<ReleveRequest, Observable<Consommation>>{
+export class DoReleve implements UseCaseFunction<ReleveRequest, Observable<Consommation>>{
 
   constructor(
     private consommationRepository: ConsommationRepository,

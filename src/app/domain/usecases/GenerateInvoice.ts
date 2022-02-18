@@ -1,4 +1,4 @@
-import {IUseCase} from "../ports/in/IUseCase";
+import {UseCaseFunction} from "../ports/in/UseCaseFunction";
 import {InvoiceRequest} from "../entities/requests/InvoiceRequest";
 import {InvoiceResponse} from "../entities/responses/InvoiceResponse";
 import {combineLatest, Observable, of} from "rxjs";
@@ -13,7 +13,7 @@ import {ConsommationRepository} from "../ports/out/ConsommationRepository";
 @Injectable({
   providedIn: "root"
 })
-export class GenerateInvoice implements IUseCase<InvoiceRequest, Observable<InvoiceResponse>> {
+export class GenerateInvoice implements UseCaseFunction<InvoiceRequest, Observable<InvoiceResponse>> {
 
   constructor(
     private clientRepository: ClientRepository,

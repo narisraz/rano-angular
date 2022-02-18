@@ -1,4 +1,4 @@
-import {IUseCase} from "../ports/in/IUseCase";
+import {UseCaseFunction} from "../ports/in/UseCaseFunction";
 import {Observable} from "rxjs";
 import {AbonneeAccount} from "../entities/AbonneeAccount";
 import {UpdateAbonneeAccountRequest} from "../entities/requests/UpdateAbonneeAccountRequest";
@@ -9,7 +9,7 @@ import {flatMap, map} from "rxjs/internal/operators";
 @Injectable({
   providedIn: "root"
 })
-export class UpdateAbonneeAccount implements IUseCase<UpdateAbonneeAccountRequest, Observable<AbonneeAccount>> {
+export class UpdateAbonneeAccount implements UseCaseFunction<UpdateAbonneeAccountRequest, Observable<AbonneeAccount>> {
 
   constructor(
     private abonneeAccountRepository: AbonneeAccountRepository

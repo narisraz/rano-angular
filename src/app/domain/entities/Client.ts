@@ -7,7 +7,7 @@ export class Client {
   nif!: string
   address!: Address
   email?: string
-  telephones?: Array<number>
+  telephones?: string
   communalTax?: number
   renewalAndExtensionFund?: number
 }

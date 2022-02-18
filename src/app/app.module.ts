@@ -16,8 +16,6 @@ import {AbonneeAccountFirestoreRepository} from "./data/firestore/AbonneeAccount
 import {AbonneeAccountRepository} from "./domain/ports/out/AbonneeAccountRepository";
 import {ConsommationRepository} from "./domain/ports/out/ConsommationRepository";
 import {ConsommationFirestoreRepository} from "./data/firestore/ConsommationFirestoreRepository";
-import {MatToolbarModule} from "@angular/material/toolbar";
-import {MatIconModule} from "@angular/material/icon";
 
 @NgModule({
   declarations: [
@@ -29,8 +27,6 @@ import {MatIconModule} from "@angular/material/icon";
     BrowserAnimationsModule,
     DomainModule,
     DataModule,
-    MatToolbarModule,
-    MatIconModule,
   ],
   providers: [
     {
